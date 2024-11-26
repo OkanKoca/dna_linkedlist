@@ -1,9 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include <string>
-#include "Dna.hpp"
 #include "Kromozom.hpp"
 #include "Gen.hpp"
+#include "Dna.hpp"
 
 using namespace std;
 
@@ -12,7 +11,7 @@ void Dna::setHeadKrom(Kromozom *pHeadKrom)
     this->pHeadKrom = pHeadKrom;
 }
 
-Kromozom *Dna::getHeadKrom()
+Kromozom *Dna::getHeadKrom() const
 {
     return this->pHeadKrom;
 }
@@ -84,7 +83,7 @@ void Dna::GenOku(){
                         pKrom->setpTail(newGen);
                         genTail = newGen;
                     }
-                    if (genCount > 0)
+                    else
                     {
                         newGen->GenOlustur(gen, nullptr, genTail);
                         genTail->setNext(newGen);
@@ -153,7 +152,6 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
     if (krom1 > kromCount || krom2 > kromCount || krom1 < 0 || krom2 < 0)
     {
         cout << "Hatali giris! Kromozom sayisindan fazla ya da 0 dan kucuk index girdiniz..." << endl;
-        throw "IndexOutOfRange";
     }
     else
     {
@@ -207,8 +205,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                     }
                     else
                     {
-                        newGen->GenOlustur(krom1MidTmp->getNuc(), nullptr, CaprazlananKrom1->getTail());
-                        CaprazlananKrom1->getTail()->setNext(newGen);
+                        newGen->GenOlustur(krom1MidTmp->getNuc(), nullptr, CaprazlananKrom1->getGenTail());
+                        CaprazlananKrom1->getGenTail()->setNext(newGen);
                         CaprazlananKrom1->setpTail(newGen);
                     }
                     krom1MidTmp = krom1MidTmp->getNext();
@@ -218,8 +216,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 {
                     Gen *newGen = new Gen();
 
-                    newGen->GenOlustur(krom2Head->getNuc(), nullptr, CaprazlananKrom1->getTail());
-                    CaprazlananKrom1->getTail()->setNext(newGen);
+                    newGen->GenOlustur(krom2Head->getNuc(), nullptr, CaprazlananKrom1->getGenTail());
+                    CaprazlananKrom1->getGenTail()->setNext(newGen);
                     CaprazlananKrom1->setpTail(newGen);
 
                     krom2Head = krom2Head->getNext();
@@ -247,8 +245,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                     }
                     else
                     {
-                        newGen->GenOlustur(krom1Head->getNuc(), nullptr, CaprazlananKrom2->getTail());
-                        CaprazlananKrom2->getTail()->setNext(newGen);
+                        newGen->GenOlustur(krom1Head->getNuc(), nullptr, CaprazlananKrom2->getGenTail());
+                        CaprazlananKrom2->getGenTail()->setNext(newGen);
                         CaprazlananKrom2->setpTail(newGen);
                     }
                     krom1Head = krom1Head->getNext();
@@ -259,8 +257,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 {
                     Gen *newGen = new Gen();
 
-                    newGen->GenOlustur(krom2MidTmp->getNuc(), nullptr, CaprazlananKrom2->getTail());
-                    CaprazlananKrom2->getTail()->setNext(newGen);
+                    newGen->GenOlustur(krom2MidTmp->getNuc(), nullptr, CaprazlananKrom2->getGenTail());
+                    CaprazlananKrom2->getGenTail()->setNext(newGen);
                     CaprazlananKrom2->setpTail(newGen);
 
                     krom2MidTmp = krom2MidTmp->getNext();
@@ -300,8 +298,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                     }
                     else
                     {
-                        newGen->GenOlustur(krom1MidTmp->getNuc(), nullptr, CaprazlananKrom1->getTail());
-                        CaprazlananKrom1->getTail()->setNext(newGen);
+                        newGen->GenOlustur(krom1MidTmp->getNuc(), nullptr, CaprazlananKrom1->getGenTail());
+                        CaprazlananKrom1->getGenTail()->setNext(newGen);
                         CaprazlananKrom1->setpTail(newGen);
                     }
                     krom1MidTmp = krom1MidTmp->getNext();
@@ -310,8 +308,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 while (krom2Head != krom2MidGen) // tek sayı oldugu icin bu gene esit olunca duracak ve onun solundakiler caprazlamaya alinmis olacak kendisi haric.
                 {
                     Gen *newGen = new Gen();
-                    newGen->GenOlustur(krom2Head->getNuc(), nullptr, CaprazlananKrom1->getTail());
-                    CaprazlananKrom1->getTail()->setNext(newGen);
+                    newGen->GenOlustur(krom2Head->getNuc(), nullptr, CaprazlananKrom1->getGenTail());
+                    CaprazlananKrom1->getGenTail()->setNext(newGen);
                     CaprazlananKrom1->setpTail(newGen);
 
                     krom2Head = krom2Head->getNext();
@@ -336,8 +334,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                     }
                     else
                     {
-                        newGen->GenOlustur(krom1Head->getNuc(), nullptr, CaprazlananKrom2->getTail());
-                        CaprazlananKrom2->getTail()->setNext(newGen);
+                        newGen->GenOlustur(krom1Head->getNuc(), nullptr, CaprazlananKrom2->getGenTail());
+                        CaprazlananKrom2->getGenTail()->setNext(newGen);
                         CaprazlananKrom2->setpTail(newGen);
                     }
                     krom1Head = krom1Head->getNext();
@@ -348,8 +346,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 while (krom2MidTmp != nullptr)
                 {
                     Gen *newGen = new Gen();
-                    newGen->GenOlustur(krom2MidTmp->getNuc(), nullptr, CaprazlananKrom2->getTail());
-                    CaprazlananKrom2->getTail()->setNext(newGen);
+                    newGen->GenOlustur(krom2MidTmp->getNuc(), nullptr, CaprazlananKrom2->getGenTail());
+                    CaprazlananKrom2->getGenTail()->setNext(newGen);
                     CaprazlananKrom2->setpTail(newGen);
 
                     krom2MidTmp = krom2MidTmp->getNext();
@@ -395,8 +393,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                     }
                     else
                     {
-                        newGen->GenOlustur(krom1Head->getNuc(), nullptr, CaprazlananKrom1->getTail());
-                        CaprazlananKrom1->getTail()->setNext(newGen);
+                        newGen->GenOlustur(krom1Head->getNuc(), nullptr, CaprazlananKrom1->getGenTail());
+                        CaprazlananKrom1->getGenTail()->setNext(newGen);
                         CaprazlananKrom1->setpTail(newGen);
                     }
                     krom1Head = krom1Head->getNext();
@@ -406,8 +404,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 while (krom2MidTmp != nullptr)
                 {
                     Gen *newGen = new Gen();
-                    newGen->GenOlustur(krom2MidTmp->getNuc(), nullptr, CaprazlananKrom1->getTail());
-                    CaprazlananKrom1->getTail()->setNext(newGen);
+                    newGen->GenOlustur(krom2MidTmp->getNuc(), nullptr, CaprazlananKrom1->getGenTail());
+                    CaprazlananKrom1->getGenTail()->setNext(newGen);
                     CaprazlananKrom1->setpTail(newGen);
 
                     krom2MidTmp = krom2MidTmp->getNext();
@@ -433,8 +431,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                     }
                     else
                     {
-                        newGen->GenOlustur(krom1MidTmp->getNuc(), nullptr, CaprazlananKrom2->getTail());
-                        CaprazlananKrom2->getTail()->setNext(newGen);
+                        newGen->GenOlustur(krom1MidTmp->getNuc(), nullptr, CaprazlananKrom2->getGenTail());
+                        CaprazlananKrom2->getGenTail()->setNext(newGen);
                         CaprazlananKrom2->setpTail(newGen);
                     }
                     krom1MidTmp = krom1MidTmp->getNext();
@@ -446,8 +444,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 while (krom2Head != krom2MidTmp)
                 {
                     Gen* newGen = new Gen();
-                    newGen->GenOlustur(krom2Head->getNuc(), nullptr, CaprazlananKrom2->getTail());
-                    CaprazlananKrom2->getTail()->setNext(newGen);
+                    newGen->GenOlustur(krom2Head->getNuc(), nullptr, CaprazlananKrom2->getGenTail());
+                    CaprazlananKrom2->getGenTail()->setNext(newGen);
                     CaprazlananKrom2->setpTail(newGen);
 
                     krom2Head = krom2Head->getNext(); 
@@ -490,8 +488,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                     }
                     else
                     {
-                        newGen->GenOlustur(krom1Head->getNuc(), nullptr, CaprazlananKrom1->getTail());
-                        CaprazlananKrom1->getTail()->setNext(newGen);
+                        newGen->GenOlustur(krom1Head->getNuc(), nullptr, CaprazlananKrom1->getGenTail());
+                        CaprazlananKrom1->getGenTail()->setNext(newGen);
                         CaprazlananKrom1->setpTail(newGen);
                     }
                     krom1Head = krom1Head->getNext();
@@ -502,8 +500,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 while (krom2MidTmp != nullptr)
                 {
                     Gen *newGen = new Gen();
-                    newGen->GenOlustur(krom2MidTmp->getNuc(), nullptr, CaprazlananKrom1->getTail());
-                    CaprazlananKrom1->getTail()->setNext(newGen);
+                    newGen->GenOlustur(krom2MidTmp->getNuc(), nullptr, CaprazlananKrom1->getGenTail());
+                    CaprazlananKrom1->getGenTail()->setNext(newGen);
                     CaprazlananKrom1->setpTail(newGen);
 
                     krom2MidTmp = krom2MidTmp->getNext();
@@ -523,14 +521,14 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                     Gen* newGen = new Gen();
                     if (genCount == 0)
                     {
-                        newGen->GenOlustur(krom1MidTmp->getNuc(), nullptr, CaprazlananKrom2->getTail());
+                        newGen->GenOlustur(krom1MidTmp->getNuc(), nullptr, CaprazlananKrom2->getGenTail());
                         CaprazlananKrom2->setpHead(newGen);
                         CaprazlananKrom2->setpTail(newGen);
                     }
                     else
                     {
-                        newGen->GenOlustur(krom1MidTmp->getNuc(), nullptr, CaprazlananKrom2->getTail());
-                        CaprazlananKrom2->getTail()->setNext(newGen);
+                        newGen->GenOlustur(krom1MidTmp->getNuc(), nullptr, CaprazlananKrom2->getGenTail());
+                        CaprazlananKrom2->getGenTail()->setNext(newGen);
                         CaprazlananKrom2->setpTail(newGen);
                     }
             
@@ -543,8 +541,8 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 while (krom2Head != krom2MidGen)
                 {
                     Gen* newGen = new Gen();
-                    newGen->GenOlustur(krom2Head->getNuc(), nullptr, CaprazlananKrom2->getTail());
-                    CaprazlananKrom2->getTail()->setNext(newGen);
+                    newGen->GenOlustur(krom2Head->getNuc(), nullptr, CaprazlananKrom2->getGenTail());
+                    CaprazlananKrom2->getGenTail()->setNext(newGen);
                     CaprazlananKrom2->setpTail(newGen);
 
                     krom2Head = krom2Head->getNext();
@@ -567,7 +565,7 @@ void Dna::Mutasyon(int satir, int sutun) {
 
     Kromozom* current = pHeadKrom;
 
-    if (kromIndex < kromCount)
+    if (kromIndex < kromCount && kromIndex >= 0)
     {
         for (int i = 0; i < kromIndex; i++)
         {
@@ -576,17 +574,20 @@ void Dna::Mutasyon(int satir, int sutun) {
                 current = current->getNext();
             }
         }
-    }
+
+        if (current->getLength() < genIndex)
+        {
+            cout << "Hatali giris! Gen sayisindan fazla index girdiniz..." << endl;
+        }
+        else
+        {
+            Gen *gen = current->getGenByIndex(genIndex);
+            gen->setNuc('X');
+        }
     
-    if (current->getLength() < genIndex)
-    {
-        cout << "Hatali giris! Gen sayisindan fazla index girdiniz..." << endl;
     }
     else
-    {
-        Gen *gen = current->getGenByIndex(genIndex);
-        gen->setNuc('X');
-    }
+        cout << "Hatali giris! Kromozom sayisindan fazla index ya da 0 dan küçük index girdiniz..." << endl;
     
 }
 
@@ -604,16 +605,18 @@ void Dna::OtomatikIslemler(){
             if(islem == 'C'){
                 file >> sayi1;
                 file >> sayi2;
-                Caprazla(sayi1, sayi2);
                 caprazSayac++;
                 cout << caprazSayac << ". caprazlama islemi yapiliyor..." << endl;
+                Caprazla(sayi1, sayi2);
+                cout << "\n";
             }
             else if(islem == 'M'){
                 file >> sayi1;
                 file >> sayi2;
-                Mutasyon(sayi1, sayi2);
                 mutSayac++;
                 cout << mutSayac << ". mutasyon islemi yapiliyor..." << endl;
+                Mutasyon(sayi1, sayi2);
+                cout << "\n";
             }
         }
     }    
@@ -623,5 +626,25 @@ void Dna::OtomatikIslemler(){
     }
 }
 
+void Dna::ekranaYaz(){
+    Kromozom *pKrom = getHeadKrom();
+    Gen *pGen = pKrom->getGenHead();
+    
+    while (pKrom != nullptr){
 
+        char firstGenNuc = pKrom->getGenHead()->getNuc();
+        pGen = pKrom->getGenTail();
+
+        while(pGen ->getPrev() != nullptr){
+            if (pGen->getNuc() < firstGenNuc)
+            {
+                cout << pGen->getNuc() << " ";
+                break;
+            }
+            else
+                pGen = pGen->getPrev();
+        }
+        pKrom = pKrom->getNext();
+    }  
+}
 

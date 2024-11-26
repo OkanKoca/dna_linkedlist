@@ -7,5 +7,3 @@ compile:
 	g++ -I ./include/ -o ./bin/Test ./lib/Dna.o ./lib/Gen.o ./lib/Kromozom.o ./src/main.cpp
 run:
 	./bin/Test
-clean:
-	del -f ./lib/Dna.o ./lib/Gen.o ./lib/Kromozom.o ./bin/Test

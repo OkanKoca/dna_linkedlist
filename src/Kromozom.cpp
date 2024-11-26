@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Kromozom.hpp"
+#include "Dna.hpp"
 using namespace std;
 
 Kromozom::Kromozom() {
@@ -17,7 +18,7 @@ void Kromozom::setpTail(Gen *pTail) {
 }
 
 void Kromozom::setLen(int len) {
-    this->len = len;
+    this->len = len; 
 }   
 Kromozom* Kromozom::getNext() const{
     return this->pNext;
@@ -28,7 +29,7 @@ void Kromozom::setNext(Kromozom *pNext) {
 Gen* Kromozom::getGenHead() const {
     return this->pHead;
 }
-Gen* Kromozom::getTail() const {
+Gen* Kromozom::getGenTail() const {
     return this->pTail;
 }
 
@@ -44,6 +45,7 @@ Gen* Kromozom::getGenByIndex(int index)const {
     return current;
 }
 
-int Kromozom::getLength(){
+
+int Kromozom::getLength() const{
     return this->len;
 }

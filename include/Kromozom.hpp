@@ -18,10 +18,9 @@ public:
     void setpTail(Gen *pTail);
     void setLen(int len);
     Gen* getGenHead() const;
-    Gen* getTail() const;
+    Gen* getGenTail() const;
     Gen* getGenByIndex(int index) const;
-    //Gen* ifBothEven(Kromozom *krom1Ptr, Kromozom *krom2Ptr, Kromozom *tailKrom) const;
-    int getLength();
+    int getLength() const;
 
 };
 
