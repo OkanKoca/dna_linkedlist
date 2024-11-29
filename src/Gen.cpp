@@ -1,3 +1,12 @@
+/**       
+* @file  Gen.cpp
+* @description Gen sınıfına ait metotların gövdelerinin bulunduğu, next pointerı previous pointerını alma gibi metotların olduğu dosya.
+* @course  1.öğretim A grubu
+* @assignment  1.ödev
+* @date  26/11/2024 (daha önce başladım fakat bu kısmı yazmayı unuttuğum için tarihini hatırlamıyorum.)
+* @author  Okan KOCA - b231210016@sakarya.edu.tr
+*/ 
+
 #include <iostream>
 #include "Gen.hpp"
 #include "Kromozom.hpp"
@@ -8,23 +17,6 @@ Gen* Gen::GenOlustur(char nuc, Gen *pNext, Gen *pPrev) {
     this->pPrev = pPrev;
     return this;
 }
-
-/*void Gen::kuyrugaEkle(Gen *newGen) {
-    Gen* current = this;
-    while (current->pNext != nullptr) {
-        current = current->pNext;
-    }
-    current->pNext = newGen;
-    newGen->pPrev = current;
-    newGen->pNext = nullptr;
-}
-*/
-// Gen* Gen::addTail(char nuc, Gen *pNext, Gen *pPrev) {
-//     this->nuc = nuc;
-//     this->pPrev = pPrev;
-//     this->pNext = pNext;
-//     return this;
-// }
 
 Gen* Gen::getNext() const {
     return this->pNext;

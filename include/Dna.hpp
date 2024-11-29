@@ -10,13 +10,13 @@ private:
     Kromozom *pTailKrom = nullptr;
 
 public:
-    //~Dna(); // Destructor
+    Dna(); // Constructor
+    ~Dna(); // Destructor
     void GenOku();
     void setHeadKrom(Kromozom *pHeadKrom);
     Kromozom* getHeadKrom() const;
     void setTailKrom(Kromozom *pTailKrom);
     Kromozom* getTailKrom();
-    void printChromosomes(Kromozom *pHeadKrom);
     void Caprazla(int krom1 = 0, int krom2 = 0);
     void Mutasyon(int satir, int sutun);
     void OtomatikIslemler();

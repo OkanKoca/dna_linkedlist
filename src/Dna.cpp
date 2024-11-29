@@ -1,3 +1,11 @@
+/**       
+* @file  Dna.cpp
+* @description Diğer sınıfların aksine bağlı liste yapısında değil diğer bağlı listeleri oluşturup işlemlerini yapan sınıf.
+* @course  1.öğretim A grubu
+* @assignment  1.ödev
+* @date  26/11/2024 (daha önce başladım fakat bu kısmı yazmayı unuttuğum için tarihini hatırlamıyorum.)
+* @author  Okan KOCA - b231210016@sakarya.edu.tr
+*/ 
 #include <iostream>
 #include <fstream>
 #include "Kromozom.hpp"
@@ -5,6 +13,30 @@
 #include "Dna.hpp"
 
 using namespace std;
+
+Dna::Dna()
+{
+    GenOku();
+}
+
+Dna::~Dna(){
+    Kromozom *current = pHeadKrom;
+    Kromozom *next = nullptr;
+
+    while (current != nullptr)
+    {
+        next = current->getNext();
+        while(current->getGenHead() != nullptr){
+            Gen *gen = current->getGenHead();
+            current->setpHead(gen->getNext());
+            //cout << gen << " adresli gen siliniyor..." << endl; // kontrol amaçlı yazıldı. Yorum satırından çıkarılıp kontrol edilebilir.
+            delete gen;
+        }
+        //cout << current << " -----------------------ADRESLI KROMOZOM SILINDI...-----------------------" << endl << endl; // kontrol amaçlı yazıldı. Yorum satırından çıkarılıp kontrol edilebilir.
+        delete current;
+        current = next;
+    }
+}
 
 void Dna::setHeadKrom(Kromozom *pHeadKrom)
 {
@@ -26,33 +58,11 @@ Kromozom *Dna::getTailKrom()
     return this->pTailKrom;
 }
 
-void Dna::printChromosomes(Kromozom *pHeadKrom)
-{
-    int i = 0;
-    // Gen *current = pHeadKrom->getGenHead();
-    Kromozom *current = pHeadKrom;
-
-    while (current != nullptr)
-    {
-        Gen *gen = current->getGenHead();
-        cout << i << ". Kromozom : ";
-        while (gen != nullptr)
-        {
-            cout << gen->getNuc() << " ";
-            gen = gen->getNext();
-        }
-        i++;
-        cout << endl;
-        current = current->getNext();
-    }
-    cout << endl;
-}
-
 int kromCount = 0;
 
 void Dna::GenOku(){
 
-    ifstream file("./doc/Dna.txt");
+    ifstream file("./Dna.txt");
     if (file.is_open())
     {
         char gen;
@@ -91,7 +101,7 @@ void Dna::GenOku(){
                         genTail = newGen;
                     }
 
-                    genCount++;
+                    ++genCount;
                 }
             }
 
@@ -103,25 +113,54 @@ void Dna::GenOku(){
                     setTailKrom(pKrom);
                     pKrom->setLen(genCount);
                     pKrom->setNext(nullptr);
-                    //cout << kromCount << ". " << pKrom << " ---------------------adresli Kromozom olusturuldu----------------------" << "kromozom uzunluk :" << pKrom->getLength() << endl; // krozomlar dogru olusturuluyor mu diye kontrol etmek icin
                 } 
-                else if (genCount > 0)
+                else //if (genCount > 0)
                 {
-                    Kromozom *current = pHeadKrom;
-                    // while (current->getNext() != nullptr)
-                    // {
-                    //     current = current->getNext();
-                    // }
                     getTailKrom()->setNext(pKrom); // burayı sadece tail olacak şekilde değiştirmek 30 sn fark ettiriyor.
-                    //current->setNext(pKrom);
                     pKrom->setNext(nullptr);
                     pKrom->setLen(genCount);
                     setTailKrom(pKrom);
-                    //cout << kromCount << ". " << pKrom << " ---------------------adresli Kromozom olusturuldu----------------------" << "kromozom uzunluk :" << pKrom->getLength() << endl; // krozomlar dogru olusturuluyor mu diye kontrol etmek icin
                 }
-                kromCount++;      
+
+                //cout << "Kromozom sayisi: " << kromCount << endl; // kontrol amaçlı yazıldı. Yorum satırından çıkarılıp kontrol edilebilir.
+                ++kromCount;
+                //cout << endl;      
+
+                // cout << "olusturulan kromozom: "; // kontrol amaçlı yazıldı. Yorum satırından çıkarılıp kontrol edilebilir.
+                // Gen* pTmp = pKrom->getGenHead();
+                // while (pTmp != nullptr)
+                // {
+                //     cout << pTmp->getNuc() << " ";
+                //     pTmp = pTmp->getNext();
+                // }
+
                 genCount = 0;
             }
+        }
+
+        // Dosyanın sonunda eksik bir kromozom varsa
+        if (genCount > 0 && pKrom != nullptr) {
+            if (kromCount == 0) {
+                setHeadKrom(pKrom);
+                setTailKrom(pKrom);
+            } else {
+                getTailKrom()->setNext(pKrom);
+                setTailKrom(pKrom);
+            }
+
+            pKrom->setLen(genCount);
+            pKrom->setNext(nullptr);
+            ++kromCount;
+
+            // cout << "Kromozom sayisi: " << kromCount << endl; kontrol amaçlı yazıldı. Yorum satırından çıkarılıp kontrol edilebilir.
+
+            // cout << "Olusturulan kromozom: "; kontrol amaçlı yazıldı. Yorum satırından çıkarılıp kontrol edilebilir.
+            // Gen *pTmp = pKrom->getGenHead();
+            // while (pTmp != nullptr) {
+            //     cout << pTmp->getNuc() << " ";
+            //     pTmp = pTmp->getNext();
+            // }
+            // cout << endl;
         }
     }
     else
@@ -175,9 +214,9 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
         krom2Ptr = current;
         current = pHeadKrom;
 
-        if (krom1Ptr->getLength() % 2 == 0)
+        if (krom1Ptr->getLength() % 2 == 0) // 1.kromozom çift sayı ise
         {
-            if (krom2Ptr->getLength() % 2 == 0)
+            if (krom2Ptr->getLength() % 2 == 0) // 2.krom çift sayı ise
             {
                 Gen *krom1MidGen = krom1Ptr->getGenByIndex(krom1Ptr->getLength() / 2);
                 Gen *krom2MidGen = krom2Ptr->getGenByIndex(krom2Ptr->getLength() / 2);
@@ -229,6 +268,12 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 tailKrom->setNext(CaprazlananKrom1);
                 tailKrom = CaprazlananKrom1;
 
+                Gen* pTmp = CaprazlananKrom1->getGenHead();
+                cout << "caprazlanan 1. kromozom: ";
+                while(pTmp != nullptr){
+                    cout << pTmp->getNuc() << " ";
+                    pTmp = pTmp->getNext();
+                }
 
                 genCount = 0;
 
@@ -268,6 +313,13 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 CaprazlananKrom2->setNext(nullptr);
                 tailKrom->setNext(CaprazlananKrom2);
                 tailKrom = CaprazlananKrom2;
+
+                pTmp = CaprazlananKrom2->getGenHead();
+                cout << "caprazlanan 2. kromozom: ";
+                while(pTmp != nullptr){
+                    cout << pTmp->getNuc() << " ";
+                    pTmp = pTmp->getNext();
+                }
 
             }
 
@@ -320,6 +372,14 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 CaprazlananKrom1->setNext(nullptr);
                 tailKrom->setNext(CaprazlananKrom1);
                 tailKrom = CaprazlananKrom1;
+
+                Gen* pTmp = CaprazlananKrom1->getGenHead(); 
+                cout << "caprazlanan 1. kromozom: ";
+                while(pTmp != nullptr){
+                    cout << pTmp->getNuc() << " ";
+                    pTmp = pTmp->getNext();
+                }
+
                 genCount = 0;
 
 
@@ -358,6 +418,13 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 CaprazlananKrom2->setNext(nullptr);
                 tailKrom->setNext(CaprazlananKrom2);
                 tailKrom = CaprazlananKrom2;
+
+                pTmp = CaprazlananKrom2->getGenHead();
+                cout << "caprazlanan 2. kromozom: ";
+                while(pTmp != nullptr){
+                    cout << pTmp->getNuc() << " ";
+                    pTmp = pTmp->getNext();
+                }
 
             }
         }
@@ -416,6 +483,14 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 CaprazlananKrom1->setNext(nullptr);
                 tailKrom->setNext(CaprazlananKrom1);
                 tailKrom = CaprazlananKrom1;
+
+                Gen* pTmp = CaprazlananKrom1->getGenHead();
+                cout << "caprazlanan 1. kromozom: ";
+                while(pTmp != nullptr){
+                    cout << pTmp->getNuc() << " ";
+                    pTmp = pTmp->getNext();
+                }
+
                 genCount = 0;
 
                 //1.kromun ortanın sağından başlaması lazım
@@ -457,6 +532,13 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 CaprazlananKrom2->setNext(nullptr);
                 tailKrom->setNext(CaprazlananKrom2);
                 tailKrom = CaprazlananKrom2;
+
+                pTmp = CaprazlananKrom2->getGenHead();
+                cout << "caprazlanan 2. kromozom: ";
+                while(pTmp != nullptr){
+                    cout << pTmp->getNuc() << " ";
+                    pTmp = pTmp->getNext();
+                }
 
             }
             else{ // 2.krom tek sayı ise
@@ -512,6 +594,14 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 CaprazlananKrom1->setNext(nullptr);
                 tailKrom->setNext(CaprazlananKrom1);
                 tailKrom = CaprazlananKrom1;
+
+                Gen* pTmp = CaprazlananKrom1->getGenHead();
+                cout << "caprazlanan 1. kromozom: ";
+                while(pTmp != nullptr){
+                    cout << pTmp->getNuc() << " ";
+                    pTmp = pTmp->getNext();
+                }
+
                 genCount = 0;
 
 
@@ -554,6 +644,13 @@ void Dna::Caprazla(int kromozom1, int kromozom2)
                 tailKrom->setNext(CaprazlananKrom2);
                 tailKrom = CaprazlananKrom2;
 
+                pTmp = CaprazlananKrom2->getGenHead();
+                cout << "caprazlanan 2. kromozom: ";
+                while(pTmp != nullptr){
+                    cout << pTmp->getNuc() << " ";
+                    pTmp = pTmp->getNext();
+                }
+
             }
         }
     }
@@ -595,7 +692,7 @@ int caprazSayac = 0;
 int mutSayac = 0;
 
 void Dna::OtomatikIslemler(){
-    ifstream file("./doc/Islemler.txt");
+    ifstream file("./Islemler.txt");
     if (file.is_open())
     {
         char islem;
@@ -608,7 +705,7 @@ void Dna::OtomatikIslemler(){
                 caprazSayac++;
                 cout << caprazSayac << ". caprazlama islemi yapiliyor..." << endl;
                 Caprazla(sayi1, sayi2);
-                cout << "\n";
+                cout << endl;
             }
             else if(islem == 'M'){
                 file >> sayi1;
@@ -616,7 +713,7 @@ void Dna::OtomatikIslemler(){
                 mutSayac++;
                 cout << mutSayac << ". mutasyon islemi yapiliyor..." << endl;
                 Mutasyon(sayi1, sayi2);
-                cout << "\n";
+                cout << endl;
             }
         }
     }    
@@ -635,14 +732,20 @@ void Dna::ekranaYaz(){
         char firstGenNuc = pKrom->getGenHead()->getNuc();
         pGen = pKrom->getGenTail();
 
-        while(pGen ->getPrev() != nullptr){
+        while(pGen != nullptr){
             if (pGen->getNuc() < firstGenNuc)
             {
                 cout << pGen->getNuc() << " ";
                 break;
             }
-            else
+            else if (pGen == pKrom->getGenHead())
+            {
+                cout << pGen->getNuc() << " ";
+                break;
+            }
+            else{
                 pGen = pGen->getPrev();
+            }
         }
         pKrom = pKrom->getNext();
     }  

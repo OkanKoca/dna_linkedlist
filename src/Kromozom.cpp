@@ -1,3 +1,11 @@
+/**       
+* @file  Kromozom.cpp
+* @description Kromozom sınıfına ait metotların gövdelerinin bulunduğu, next pointerını ayarlama, next pointerını alma, kromozomda kaç gen bulunduğunu belirten len değişkenini ayarlama gibi metotların olduğu dosya.
+* @course  1.öğretim A grubu
+* @assignment  1.ödev
+* @date  26/11/2024 (daha önce başladım fakat bu kısmı yazmayı unuttuğum için tarihini hatırlamıyorum.)
+* @author  Okan KOCA - b231210016@sakarya.edu.tr
+*/ 
 #include <iostream>
 #include "Kromozom.hpp"
 #include "Dna.hpp"
